@@ -3,11 +3,11 @@ import matplotlib.pyplot as plt
 import os
 from ezdxf.addons.drawing import RenderContext, Frontend
 from ezdxf.addons.drawing.matplotlib import MatplotlibBackend
-from matplotlib import font_manager
 from PIL import Image
 
 # フォルダパスを指定
 folder_path = "C:/Users/yasud/Documents/src2"
+
 dxf_files = ["test_file1_answer.dxf", "test_file2_answer.dxf"]
 
 
@@ -17,13 +17,15 @@ for dxf_file in dxf_files:
     try:
         # DXFファイル読み込み
         doc = ezdxf.readfile(dxf_path)
+        
+        # 図形のあるメインの空間を取得
         msp = doc.modelspace()
 
         # 描画準備
         fig = plt.figure(figsize=(10, 10))
         ax = fig.add_axes([0, 0, 1, 1])
 
-        # 高精度描画コンテキスト
+        # 高精度描画
         ctx = RenderContext(doc)
         ctx.set_current_layout(msp)
         backend = MatplotlibBackend(ax)
@@ -50,6 +52,7 @@ for dxf_file in dxf_files:
                     pixels[x, y] = (255, 255, 255)
 
         img.save(png_path)
+        plt.close()
         print(f"✅ 画像を保存しました：{png_path}")
 
     except Exception as e:
